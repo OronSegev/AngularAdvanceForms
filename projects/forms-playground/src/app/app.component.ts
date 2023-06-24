@@ -2,14 +2,16 @@ import { Component } from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { HeaderComponent } from "./core/header/header.component";
+import { FooterComponent } from "./core/footer/footer.component";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  standalone: true,
-  imports: [RouterModule],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    standalone: true,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [RouterModule, HeaderComponent, FooterComponent]
 })
 export class AppComponent {
   constructor(public title: Title) {}
