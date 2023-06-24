@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { UserInfo } from '../../core/user-info';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-template-forms-page',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './template-forms-page.component.html',
   styleUrls: [
     '../common-page.scss',
@@ -13,6 +15,19 @@ import { CommonModule } from '@angular/common';
 ]
 })
 export class TemplateFormsPageComponent {
+
+  userInfo: UserInfo = {
+    firstName: '',
+    lastName: '',
+    nickname: '',
+    email: '',
+    yearOfBirth: 0,
+    passport: '',
+    fullAddress: '',
+    city: '',
+    postCode: ''
+  }
+
   constructor() { }
 
   get years() {
