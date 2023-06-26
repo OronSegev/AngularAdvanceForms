@@ -4,6 +4,9 @@
   --color-accent: #ff8888;
   --color-accent-secondary: #ffc15a;
   --color-accent-secondary-darker: #faa415;
+  --color-success: #4caf50;
+  --color-error: #ff5722;
+  --color-info: #449eff;
   --color-background: #eceff1;
   --color-text: #263238;
   --color-text-light: #607d8b;
@@ -14,12 +17,20 @@
   --font-size-h1: 34px;
 }
 
-body, html, p, h1, h2, h3, h4, h5, span {
+body,
+html,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+span {
   padding: 0;
   margin: 0;
 }
 body {
-  font-family: 'Poppins';
+  font-family: "Poppins";
   background-color: var(--color-background);
 }
 
@@ -41,7 +52,10 @@ form {
   max-width: 450px;
 }
 
-label, input, fieldset, button {
+label,
+input,
+fieldset,
+button {
   width: 100%;
   box-sizing: border-box;
 }
@@ -66,6 +80,10 @@ button {
     background-color: var(--color-accent-secondary-darker);
     border: var(--color-accent-secondary) 1px solid;
   }
+  &.reset-button {
+    background-color:  transparent;
+    border: var(--color-primary) 1px solid;
+  }
 }
 
 input {
@@ -76,7 +94,9 @@ legend {
   font-weight: bold;
 }
 
-input, button, select {
+input,
+button,
+select {
   border-radius: 5px;
   font-size: 18px;
   padding: 10px 11px;
@@ -84,4 +104,46 @@ input, button, select {
 
 select {
   width: 100%;
+}
+
+.ng-valid.ng-dirty:not([ngModelGroup]):not(form) {
+  border: 1px solid var(--color-success);
+}
+.ng-invalid.ng-dirty:not([ngModelGroup='address']):not(form) {
+  border: 1px solid var(--color-error);
+}
+button[disabled] {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-color: rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+}
+
+@keyframes input-message-animation {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@mixin input-message() {
+  font-size: 12px;
+  box-sizing: border-box;
+  pad: 2px 13px;
+  animation-name: input-message-animation;
+  animation-duration: 300ms;
+}
+
+.input-error {
+  @include input-message();
+  color: var(--color-error);
+}
+
+.input-info {
+  @include input-message();
+  color: var(--color-info);
 }

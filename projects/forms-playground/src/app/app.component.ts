@@ -10,8 +10,8 @@ import { FooterComponent } from "./core/footer/footer.component";
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
     standalone: true,
+    imports: [RouterModule, HeaderComponent, FooterComponent],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [RouterModule, HeaderComponent, FooterComponent]
 })
 export class AppComponent {
   constructor(public title: Title) {}
