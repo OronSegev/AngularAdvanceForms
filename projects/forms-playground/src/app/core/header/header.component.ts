@@ -1,17 +1,29 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent {
-  searchString = '';
+export class HeaderComponent implements OnInit {
+  // searchString = '';
+  reactivesearchString = new FormControl('');
 
+  ngOnInit() {
+    this.reactivesearchString.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+    ).subscribe(console.log);
+  }
 }

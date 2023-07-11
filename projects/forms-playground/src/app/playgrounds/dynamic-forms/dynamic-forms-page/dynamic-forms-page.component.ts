@@ -6,10 +6,6 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './dynamic-forms-page.component.html',
-  styleUrls: [
-    '../../common-page.scss',
-    './dynamic-forms-page.component.scss']
+  styleUrls: ['../../common-page.scss', './dynamic-forms-page.component.scss'],
 })
-export class DynamicFormsPageComponent {
-
-}
+export class DynamicFormsPageComponent {}

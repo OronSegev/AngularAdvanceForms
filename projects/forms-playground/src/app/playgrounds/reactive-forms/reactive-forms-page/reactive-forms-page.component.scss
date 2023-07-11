@@ -1,0 +1,80 @@
+.add-button {
+  width: 50px;
+  padding: 5px;
+}
+
+.control-buttons {
+  margin-bottom: var(--spacing-step);
+  display: flex;
+  justify-content: end;
+}
+
+.control-container {
+  display: flex;
+  align-items: center;
+}
+
+.remove-button {
+  width: 50px;
+  margin: 0 0 0 10px;
+  background-color: transparent;
+  border-color: var(--color-error);
+  color: var(--color-error);
+}
+
+.phone-label-dropdown {
+  margin-right: var(--spacing-step);
+  width: 110px;
+}
+
+.skill-container {
+  display: flex;
+  align-items: center;
+}
+
+.ng-valid.ng-dirty:not([formGroupName]):not([formArrayName]):not([ngModelGroup]):not(form)
+{
+  border: 2px solid var(--color-success);
+}
+
+
+.ng-invalid.ng-dirty:not([ngModelGroup='address']):not(form):not([formArrayName]):not([ngModelGroup="address"]):not(form)
+{
+  border: 2px solid var(--color-error);
+}
+
+button[disabled] {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-color: rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+}
+
+@keyframes input-message-animation {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@mixin input-message() {
+  font-size: 12px;
+  box-sizing: border-box;
+  pad: 2px 13px;
+  animation-name: input-message-animation;
+  animation-duration: 300ms;
+}
+
+.input-error {
+  @include input-message();
+  color: var(--color-error);
+}
+
+.input-info {
+  @include input-message();
+  color: var(--color-info);
+}
