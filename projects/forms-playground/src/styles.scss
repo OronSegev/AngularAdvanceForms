@@ -66,7 +66,6 @@ input[type="checkbox"] {
   margin-right: var(--spacing-step);
 }
 
-
 fieldset {
   border-radius: var(--border-radius);
   border: 1px solid var(--color-text-light);
@@ -88,7 +87,7 @@ button {
     border: var(--color-accent-secondary) 1px solid;
   }
   &.reset-button {
-    background-color:  transparent;
+    background-color: transparent;
     border: var(--color-primary) 1px solid;
   }
 }

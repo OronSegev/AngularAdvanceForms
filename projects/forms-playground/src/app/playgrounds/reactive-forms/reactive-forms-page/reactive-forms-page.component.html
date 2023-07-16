@@ -1,4 +1,4 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit($event)" class="form">
+<form [formGroup]="form" (reset)="onReset($event)" (ngSubmit)="onSubmit($event)" class="form">
   <pre>{{ form.value | json }}</pre>
   <div class="form-field">
     <label for="name">First Name</label>
@@ -73,6 +73,18 @@
       </div>
       <div
         class="input-error"
+        *ngIf="nickname.dirty && nickname.hasError('uniqeName')"
+      >
+        This Nickname is already taken
+      </div>
+      <div
+        class="input-info"
+        *ngIf="nickname.pending"
+      >
+        Checking nickname...
+      </div>
+      <div
+        class="input-error"
         *ngIf="nickname.dirty && nickname.hasError('minlength')"
       >
         This name must be at least
@@ -97,10 +109,7 @@
       placeholder="Provide your email"
     />
     <ng-container *ngIf="form.controls.email as email">
-      <div
-        class="input-error"
-        *ngIf="email.dirty && email.hasError('email')"
-      >
+      <div class="input-error" *ngIf="email.dirty && email.hasError('email')">
         Must be a valid Email
       </div>
     </ng-container>
@@ -127,6 +136,12 @@
         >
           Must be a valid Passport
         </div>
+        <div
+          class="input-error"
+          *ngIf="passport.dirty && passport.hasError('required')"
+        >
+          Passport is required for adults
+        </div>
       </ng-container>
     </div>
   </div>
@@ -140,7 +155,9 @@
         id="full-address"
         placeholder="Street name and house number"
       />
-      <ng-container *ngIf="form.controls.address.controls.fullAddress as fullAddress">
+      <ng-container
+        *ngIf="form.controls.address.controls.fullAddress as fullAddress"
+      >
         <div
           class="input-error"
           *ngIf="fullAddress.dirty && fullAddress.hasError('required')"
@@ -226,37 +243,57 @@
     <legend>Password</legend>
     <div class="form-field">
       <label for="password">Create Password</label>
-      <input formControlName="password" type="password" id="password" placeholder="Enter password...">
-      <ng-container *ngIf="form.controls.password.controls.password as password">
+      <input
+        formControlName="password"
+        type="password"
+        id="password"
+        placeholder="Enter password..."
+      />
+      <ng-container
+        *ngIf="form.controls.password.controls.password as password"
+      >
         <div
-        class="input-error"
-        *ngIf="password.dirty && password.hasError('required')"
-      >
-        Password required
-      </div>
-      <div
-        class="input-error"
-        *ngIf="password.dirty && password.hasError('minlength')"
-      >
-        The password must be at least
-        {{ password.getError("minlength").requiredLength }} characters
-      </div>
+          class="input-error"
+          *ngIf="password.dirty && password.hasError('required')"
+        >
+          Password required
+        </div>
+        <div
+          class="input-error"
+          *ngIf="password.dirty && password.hasError('minlength')"
+        >
+          The password must be at least
+          {{ password.getError("minlength").requiredLength }} characters
+        </div>
       </ng-container>
     </div>
     <div class="form-field">
       <label for="confirm-password">Confirm Password</label>
-      <input formControlName="confirmPassword" type="password" id="confirm-password" placeholder="Enter password...">
-      <ng-container *ngIf="form.controls.password.controls.confirmPassword as confirmPasswords">
-        <div
-        class="input-error"
-        *ngIf="confirmPasswords.dirty && confirmPasswords.hasError('passwordShouldmatch')"
+      <input
+        formControlName="confirmPassword"
+        type="password"
+        id="confirm-password"
+        placeholder="Enter password..."
+      />
+      <ng-container
+        *ngIf="
+          form.controls.password.controls.confirmPassword as confirmPasswords
+        "
       >
-        Password Mismatch
-      </div>
+        <div
+          class="input-error"
+          *ngIf="
+            confirmPasswords.dirty &&
+            confirmPasswords.hasError('passwordShouldmatch')
+          "
+        >
+          Password Mismatch
+        </div>
       </ng-container>
     </div>
   </fieldset>
-  <button type="submit" [disabled]="form.invalid">Save</button>
+  <button type="submit" [disabled]="form.invalid && form.pending">Save</button>
+  <button class="reset-button" type="reset" [disabled]="form.pristine">Reset</button>
 </form>
 
 <ng-template #loading>

@@ -1,18 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  OnInit,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
+  FormGroupDirective,
   FormRecord,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Observable, tap } from 'rxjs';
+import { Observable, bufferCount, filter, startWith, tap } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UserSkillsService } from '../../../core/user-skills.service';
 import { banwords } from '../validators/ban-words';
 import { passwordShouldmatch } from '../validators/password-should-match';
+import { UinqueNicknameValidator } from '../validators/uinque-nicknameValidator';
 
 @Component({
   selector: 'app-reactive-forms-page',
@@ -22,9 +32,12 @@ import { passwordShouldmatch } from '../validators/password-should-match';
   styleUrls: ['../../common-page.scss', './reactive-forms-page.component.scss'],
 })
 export class ReactiveFormsPageComponent implements OnInit {
+  @ViewChild(FormGroupDirective) private formDir!: FormGroupDirective;
   phonesLabels = ['Main', 'Mobile', 'Work', 'Home'];
   years = this.getYears();
   skills$!: Observable<string[]>;
+
+  destroyRef = inject(DestroyRef);
 
   form = this.fb.group({
     firstName: [
@@ -34,12 +47,20 @@ export class ReactiveFormsPageComponent implements OnInit {
     lastName: ['Segev', [Validators.required, Validators.minLength(2)]],
     nickname: [
       '',
-      [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.pattern(/^[\w]+$/),
-        banwords(['test', 'dummy']),
-      ],
+      {
+        validators: [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.pattern(/^[\w]+$/),
+          banwords(['test', 'dummy']),
+        ],
+        asyncValidators: [
+          this.uniqeNicknameValidator.validate.bind(
+            this.uniqeNicknameValidator
+          ),
+        ],
+        updateOn: 'blur',
+      },
     ],
     email: ['oron@segev.com', Validators.email],
     yearOfBirth: this.fb.nonNullable.control(
@@ -59,18 +80,50 @@ export class ReactiveFormsPageComponent implements OnInit {
       }),
     ]),
     skills: this.fb.record<boolean>({}),
-    password: this.fb.group({
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ''
-    }, { validators: passwordShouldmatch})
+    password: this.fb.group(
+      {
+        password: ['', [Validators.required, Validators.minLength(6)]],
+        confirmPassword: '',
+      },
+      { validators: passwordShouldmatch }
+    ),
   });
 
-  constructor(private userSkills: UserSkillsService, private fb: FormBuilder) {}
+  private initialFormValue: any;
+
+  constructor(
+    private userSkills: UserSkillsService,
+    private fb: FormBuilder,
+    private uniqeNicknameValidator: UinqueNicknameValidator,
+    private cd: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
-    this.skills$ = this.userSkills
-      .getSkills()
-      .pipe(tap((skills) => this.buildSkillControls(skills)));
+    this.skills$ = this.userSkills.getSkills().pipe(
+      tap((skills) => this.buildSkillControls(skills)),
+      tap(() => (this.initialFormValue = this.form.value))
+    );
+
+    this.form.controls.yearOfBirth.valueChanges
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        tap(() => this.form.controls.passport.markAsDirty()),
+        startWith(this.form.controls.yearOfBirth.value)
+      )
+      .subscribe((yearOfBirth) => {
+        this.isAdult(yearOfBirth)
+          ? this.form.controls.passport.addValidators(Validators.required)
+          : this.form.controls.passport.removeValidators(Validators.required);
+
+        this.form.controls.passport.updateValueAndValidity();
+      });
+    this.form.statusChanges
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        bufferCount(2, 1),
+        filter(([prevState]) => prevState === 'PENDING')
+      )
+      .subscribe(() => this.cd.markForCheck());
   }
 
   addPhone() {
@@ -90,6 +143,25 @@ export class ReactiveFormsPageComponent implements OnInit {
 
   onSubmit(event: Event) {
     console.log(this.form.value);
+    this.initialFormValue = this.form.value;
+    // ressting From strategy
+    // stg 1 - all value set to null, set form pristing
+    // this.form.reset();
+    // stg 2 - drawback resetForm is not type safe
+    // this.formDir.resetForm();
+    // stg 3- reset and keep the submitted value
+    this.formDir.resetForm(this.form.value);
+  }
+
+  onReset(e: Event) {
+    e.preventDefault();
+    // ressting From strategy
+    // stg 1 - all value set to null, set form pristing
+    // this.form.reset();
+    // stg 2 - drawback resetForm is not type safe
+    // this.formDir.resetForm();
+    // stg 3- reset and keep the submitted value
+    this.formDir.resetForm(this.initialFormValue);
   }
 
   private getYears() {
@@ -106,5 +178,10 @@ export class ReactiveFormsPageComponent implements OnInit {
         new FormControl(false, { nonNullable: true })
       );
     });
+  }
+
+  private isAdult(yearOfBirth: number): boolean {
+    const currentYear = new Date().getFullYear();
+    return currentYear - yearOfBirth >= 18;
   }
 }
