@@ -1,1 +1,3 @@
-<lib-select label="my label"></lib-select>
+<lib-select (selectionChanged)="onSelectionChanged($event)" [value]="selectValue" label="my label">
+  <lib-option *ngFor="let user of users" [value]="user.nickname">{{user.name}}</lib-option>
+</lib-select>
