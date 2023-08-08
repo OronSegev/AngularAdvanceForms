@@ -23,7 +23,6 @@ export class CustomSelectPageComponent implements OnInit {
     new User(2, 'Niels Bohr', 'niels', 'Denmark'),
     new User(3, 'Marie Curie', 'marie', 'Poland/French'),
     new User(4, 'IsaacNewton', 'isaac', 'United Kingdom', true),
-
   ];
 
   constructor(private cd: ChangeDetectorRef) {}
@@ -37,6 +36,10 @@ export class CustomSelectPageComponent implements OnInit {
 
   displayWith(user: User) {
     return user.name;
+  }
+
+  comparewith(user1: User | null, user2: User | null) {
+    return user1?.id === user2?.id;
   }
 
   onSelectionChanged(value: any) {

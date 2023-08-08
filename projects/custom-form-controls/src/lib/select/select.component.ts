@@ -15,8 +15,10 @@ import {
   EventEmitter,
   HostListener,
   Input,
+  OnChanges,
   Output,
   QueryList,
+  SimpleChanges,
   inject,
 } from '@angular/core';
 import { OptionComponent } from './option/option.component';
@@ -42,10 +44,11 @@ export type SelectedValue<T> = T | null;
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SelectComponent<T> implements AfterContentInit {
+export class SelectComponent<T> implements OnChanges, AfterContentInit {
   @Input({ required: true }) label = '';
 
-  @Input() displayWith:((value: T) => string | number ) | null = null;
+  @Input() displayWith: ((value: T) => string | number) | null = null;
+  @Input() compareyWith: (v1: T | null, v2: T | null) => boolean = (v1, v2) => v1 === v2;
 
   @Input()
   set value(value: SelectedValue<T>) {
@@ -85,6 +88,13 @@ export class SelectComponent<T> implements AfterContentInit {
   ngAfterContentInit(): void {
     this.handleSelectionModelChanged();
     this.handleOptionsChanged();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['compareWith']) {
+      this.selectionModel.compareWith = changes['compareWith'].currentValue;
+      this.highlightSelectedOptions(this.value);
+    }
   }
 
   close() {
@@ -143,7 +153,8 @@ export class SelectComponent<T> implements AfterContentInit {
 
   private findOptionsByValue(value: SelectedValue<T>) {
     return (
-      this.options && this.options.find((option) => option.value === value)
+      this.options &&
+      this.options.find((option) => this.compareyWith(option.value, value))
     );
   }
 }

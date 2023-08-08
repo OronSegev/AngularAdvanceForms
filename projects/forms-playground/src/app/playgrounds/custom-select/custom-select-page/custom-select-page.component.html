@@ -1,3 +1,11 @@
-<lib-select (selectionChanged)="onSelectionChanged($event)" [displayWith]="displayWith" [value]="selectValue" label="my label">
-  <lib-option *ngFor="let user of users" [value]="user">{{user.name}}</lib-option>
+<lib-select
+  [displayWith]="displayWith"
+  [compareyWith]="comparewith"
+  [value]="selectValue"
+  (selectionChanged)="onSelectionChanged($event)"
+  label="my label"
+>
+  <lib-option *ngFor="let user of users" [value]="user">{{
+    user.name
+  }}</lib-option>
 </lib-select>
