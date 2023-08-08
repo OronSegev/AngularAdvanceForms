@@ -40,10 +40,12 @@ export type SelectedValue<T> = T | null;
       ]),
     ]),
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectComponent<T> implements AfterContentInit {
   @Input({ required: true }) label = '';
+
+  @Input() displayWith:((value: T) => string | number ) | null = null;
 
   @Input()
   set value(value: SelectedValue<T>) {
@@ -72,30 +74,17 @@ export class SelectComponent<T> implements AfterContentInit {
   private selectionModel = new SelectionModel<T>();
   private destroyRef = inject(DestroyRef);
 
-  ngAfterContentInit(): void {
-    this.selectionModel.changed
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((values) => {
-        values.removed.forEach((rv) => {
-          this.findOptionsByValue(rv)?.deselect();
-        });
-        values.added.forEach((av) =>
-          this.findOptionsByValue(av)?.highlightAsSelected()
-        );
-      });
+  protected get displayValue() {
+    if (this.displayWith && this.value) {
+      return this.displayWith(this.value);
+    }
 
-    this.options.changes
-      .pipe(
-        startWith<QueryList<OptionComponent<T>>>(this.options),
-        tap(() => {
-          queueMicrotask(()=> {
-            this.highlightSelectedOptions(this.value);
-          });
-        }),
-        switchMap((options) => merge(...options.map((o) => o.selected))),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe((selectedOption) => this.handleSelection(selectedOption));
+    return this.value;
+  }
+
+  ngAfterContentInit(): void {
+    this.handleSelectionModelChanged();
+    this.handleOptionsChanged();
   }
 
   close() {
@@ -111,6 +100,35 @@ export class SelectComponent<T> implements AfterContentInit {
       this.closed.emit();
     }
   }
+
+  private handleSelectionModelChanged() {
+    this.selectionModel.changed
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((values) => {
+        values.removed.forEach((rv) => {
+          this.findOptionsByValue(rv)?.deselect();
+        });
+        values.added.forEach((av) =>
+          this.findOptionsByValue(av)?.highlightAsSelected()
+        );
+      });
+  }
+
+  private handleOptionsChanged() {
+    this.options.changes
+      .pipe(
+        startWith<QueryList<OptionComponent<T>>>(this.options),
+        tap(() => {
+          queueMicrotask(() => {
+            this.highlightSelectedOptions(this.value);
+          });
+        }),
+        switchMap((options) => merge(...options.map((o) => o.selected))),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((selectedOption) => this.handleSelection(selectedOption));
+  }
+
   private handleSelection(option: OptionComponent<T>) {
     if (option.value) {
       this.selectionModel.toggle(option.value);

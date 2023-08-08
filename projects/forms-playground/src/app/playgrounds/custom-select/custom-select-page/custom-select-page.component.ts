@@ -17,7 +17,7 @@ import { User } from '../../../core/users';
   imports: [CommonModule, SelectModule],
 })
 export class CustomSelectPageComponent implements OnInit {
-  selectValue = 'Albert';
+  selectValue = new User(3, 'Marie Curie', 'marie', 'Poland/French');
   users: User[] = [
     new User(1, 'Albert Einstein', 'albert', 'Germany/USA'),
     new User(2, 'Niels Bohr', 'niels', 'Denmark'),
@@ -30,12 +30,16 @@ export class CustomSelectPageComponent implements OnInit {
 
   ngOnInit(): void {
     setTimeout(() => {
-      this.selectValue = 'David';
+      this.selectValue = new User(2, 'Niels Bohr', 'niels', 'Denmark');
       this.cd.markForCheck();
     }, 5000);
   }
 
-  onSelectionChanged(value: string | null) {
+  displayWith(user: User) {
+    return user.name;
+  }
+
+  onSelectionChanged(value: any) {
     console.log('Selected value', value);
   }
 }
