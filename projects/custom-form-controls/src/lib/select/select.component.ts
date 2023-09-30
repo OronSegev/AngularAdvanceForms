@@ -48,7 +48,8 @@ export class SelectComponent<T> implements OnChanges, AfterContentInit {
   @Input({ required: true }) label = '';
 
   @Input() displayWith: ((value: T) => string | number) | null = null;
-  @Input() compareyWith: (v1: T | null, v2: T | null) => boolean = (v1, v2) => v1 === v2;
+  @Input() compareyWith: (v1: T | null, v2: T | null) => boolean = (v1, v2) =>
+    v1 === v2;
 
   @Input()
   set value(value: SelectedValue<T>) {
@@ -75,6 +76,7 @@ export class SelectComponent<T> implements OnChanges, AfterContentInit {
   isOpen = false;
 
   private selectionModel = new SelectionModel<T>();
+  private optionMap = new Map<T | null, OptionComponent<T>>();
   private destroyRef = inject(DestroyRef);
 
   protected get displayValue() {
@@ -116,10 +118,10 @@ export class SelectComponent<T> implements OnChanges, AfterContentInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((values) => {
         values.removed.forEach((rv) => {
-          this.findOptionsByValue(rv)?.deselect();
+          this.optionMap.get(rv)?.deselect();
         });
         values.added.forEach((av) =>
-          this.findOptionsByValue(av)?.highlightAsSelected()
+          this.optionMap.get(av)?.highlightAsSelected()
         );
       });
   }
@@ -128,6 +130,7 @@ export class SelectComponent<T> implements OnChanges, AfterContentInit {
     this.options.changes
       .pipe(
         startWith<QueryList<OptionComponent<T>>>(this.options),
+        tap(() => this.refreshOptionsMap()),
         tap(() => {
           queueMicrotask(() => {
             this.highlightSelectedOptions();
@@ -148,18 +151,29 @@ export class SelectComponent<T> implements OnChanges, AfterContentInit {
   }
 
   private highlightSelectedOptions() {
-    const valuesWithUpdatedreferences = this.selectionModel.selected.map(value => {
-      const correspondingOption = this.findOptionsByValue(value);
-      return correspondingOption ? correspondingOption.value! : value;
-    });
+    const valuesWithUpdatedreferences = this.selectionModel.selected.map(
+      (value) => {
+        const correspondingOption = this.findOptionsByValue(value);
+        return correspondingOption ? correspondingOption.value! : value;
+      }
+    );
     this.selectionModel.clear();
-    this.selectionModel.select(...valuesWithUpdatedreferences)
+    this.selectionModel.select(...valuesWithUpdatedreferences);
   }
 
   private findOptionsByValue(value: SelectedValue<T>) {
+    if (this.optionMap.has(value)) {
+      return this.optionMap.get(value);
+    }
+
     return (
       this.options &&
       this.options.find((option) => this.compareyWith(option.value, value))
     );
+  }
+
+  private refreshOptionsMap() {
+    this.optionMap.clear();
+    this.options.forEach((o) => this.optionMap.set(o.value, o));
   }
 }
