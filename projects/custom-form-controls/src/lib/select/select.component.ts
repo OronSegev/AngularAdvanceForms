@@ -93,7 +93,7 @@ export class SelectComponent<T> implements OnChanges, AfterContentInit {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['compareWith']) {
       this.selectionModel.compareWith = changes['compareWith'].currentValue;
-      this.highlightSelectedOptions(this.value);
+      this.highlightSelectedOptions();
     }
   }
 
@@ -130,7 +130,7 @@ export class SelectComponent<T> implements OnChanges, AfterContentInit {
         startWith<QueryList<OptionComponent<T>>>(this.options),
         tap(() => {
           queueMicrotask(() => {
-            this.highlightSelectedOptions(this.value);
+            this.highlightSelectedOptions();
           });
         }),
         switchMap((options) => merge(...options.map((o) => o.selected))),
@@ -147,8 +147,13 @@ export class SelectComponent<T> implements OnChanges, AfterContentInit {
     this.close();
   }
 
-  private highlightSelectedOptions(value: SelectedValue<T>) {
-    this.findOptionsByValue(value)?.highlightAsSelected();
+  private highlightSelectedOptions() {
+    const valuesWithUpdatedreferences = this.selectionModel.selected.map(value => {
+      const correspondingOption = this.findOptionsByValue(value);
+      return correspondingOption ? correspondingOption.value! : value;
+    });
+    this.selectionModel.clear();
+    this.selectionModel.select(...valuesWithUpdatedreferences)
   }
 
   private findOptionsByValue(value: SelectedValue<T>) {
