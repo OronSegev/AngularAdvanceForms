@@ -14,6 +14,7 @@ import {
   ContentChildren,
   DestroyRef,
   EventEmitter,
+  HostBinding,
   HostListener,
   Input,
   OnChanges,
@@ -85,6 +86,7 @@ export class SelectComponent<T> implements OnChanges, AfterContentInit {
   @ContentChildren(OptionComponent, { descendants: true })
   options!: QueryList<OptionComponent<T>>;
 
+  @HostBinding('class.select-panel-open')
   isOpen = false;
 
   private selectionModel = new SelectionModel<T>(
