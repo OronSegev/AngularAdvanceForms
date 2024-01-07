@@ -6,7 +6,5 @@
   (selectionChanged)="onSelectionChanged($event)"
   label="my label"
 >
-  <lib-option *ngFor="let user of users" [value]="user">{{
-    user.name
-  }}</lib-option>
+  <lib-option *ngFor="let user of users" [value]="user">{{user.name}}</lib-option>
 </lib-select>

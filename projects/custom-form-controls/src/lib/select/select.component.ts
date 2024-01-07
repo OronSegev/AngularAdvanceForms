@@ -90,7 +90,7 @@ export class SelectComponent<T> implements OnChanges, AfterContentInit {
   private selectionModel = new SelectionModel<T>(
     coerceBooleanProperty(this.multiple)
   );
-  private optionMap = new Map< SelectValue<T> |T | null, OptionComponent<T>>();
+  private optionMap = new Map< SelectValue<T> | T | null, OptionComponent<T>>();
   private destroyRef = inject(DestroyRef);
 
   protected get displayValue() {

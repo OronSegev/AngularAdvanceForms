@@ -31,12 +31,7 @@ export class CustomSelectPageComponent implements OnInit {
 
   constructor(private cd: ChangeDetectorRef) {}
 
-  ngOnInit(): void {
-    setTimeout(() => {
-      this.selectValue = new User(2, 'Niels Bohr', 'niels', 'Denmark');
-      this.cd.markForCheck();
-    }, 5000);
-  }
+  ngOnInit(): void {}
 
   displayWith(user: User) {
     return user.name;
