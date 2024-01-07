@@ -119,6 +119,12 @@ export class SelectComponent<T> implements OnChanges, AfterContentInit {
     }
   }
 
+  clearSelection(event: Event) {
+    event.stopPropagation();
+    this.selectionModel.clear();
+    this.selectionChanged.emit(this.value);
+  }
+
   close() {
     this.isOpen = false;
   }

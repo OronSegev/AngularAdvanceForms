@@ -1,8 +1,7 @@
 <div class="label">{{ label }}</div>
 <div class="control" cdkOverlayOrigin #origin="cdkOverlayOrigin">
-  <span class="selected-value" [ngClass]="{ empty: !value }">{{
-    displayValue || "Nothing is selected..."
-  }}</span>
+  <span class="selected-value" [ngClass]="{ empty: !value }">{{displayValue || "Nothing is selected..."}}</span>
+  <button (click)="clearSelection($event)" *ngIf="value" type="button" class="clear-button">clear</button>
   <span class="drop-down-icon">👇</span>
 </div>
 
