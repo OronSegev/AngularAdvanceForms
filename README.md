@@ -2,6 +2,11 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.0.1.
 
+How to run this Projects:
+1. open terminal and run:  ng build customFormControls --watch
+2. in a seperate terminal navigate to the from-playground project ('cd angularAdvanceForms\projects\forms-playground').
+3. run: ng serve
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.

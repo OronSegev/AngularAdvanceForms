@@ -8,6 +8,7 @@ import {
 } from '@angular/animations';
 import {
   AfterContentInit,
+  Attribute,
   ChangeDetectionStrategy,
   Component,
   ContentChildren,
@@ -25,8 +26,9 @@ import { OptionComponent } from './option/option.component';
 import { SelectionModel } from '@angular/cdk/collections';
 import { merge, startWith, switchMap, takeUntil, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
-export type SelectedValue<T> = T | null;
+export type SelectValue<T> = T | T[] | null;
 
 @Component({
   selector: 'lib-select',
@@ -52,17 +54,27 @@ export class SelectComponent<T> implements OnChanges, AfterContentInit {
     v1 === v2;
 
   @Input()
-  set value(value: SelectedValue<T>) {
+  set value(value: SelectValue<T>) {
     this.selectionModel.clear();
     if (value) {
-      this.selectionModel.select(value);
+      if (Array.isArray(value)) {
+        this.selectionModel.select(...value);
+      } else {
+        this.selectionModel.select(value);
+      }
     }
   }
   get value() {
-    return this.selectionModel.selected[0] || null;
+    if (this.selectionModel.isEmpty()) {
+      return null;
+    }
+    if (this.selectionModel.isMultipleSelection()) {
+      return this.selectionModel.selected;
+    }
+    return this.selectionModel.selected[0];
   }
 
-  @Output() readonly selectionChanged = new EventEmitter<SelectedValue<T>>();
+  @Output() readonly selectionChanged = new EventEmitter<SelectValue<T>>();
   @Output() readonly opened = new EventEmitter<void>();
   @Output() readonly closed = new EventEmitter<void>();
 
@@ -75,17 +87,25 @@ export class SelectComponent<T> implements OnChanges, AfterContentInit {
 
   isOpen = false;
 
-  private selectionModel = new SelectionModel<T>();
-  private optionMap = new Map<T | null, OptionComponent<T>>();
+  private selectionModel = new SelectionModel<T>(
+    coerceBooleanProperty(this.multiple)
+  );
+  private optionMap = new Map< SelectValue<T> |T | null, OptionComponent<T>>();
   private destroyRef = inject(DestroyRef);
 
   protected get displayValue() {
     if (this.displayWith && this.value) {
+      if(Array.isArray(this.value)) {
+        return this.value.map(this.displayWith);
+      }
+
       return this.displayWith(this.value);
     }
 
     return this.value;
   }
+
+  constructor(@Attribute('multiple') private multiple: string | null) {}
 
   ngAfterContentInit(): void {
     this.handleSelectionModelChanged();
@@ -147,7 +167,9 @@ export class SelectComponent<T> implements OnChanges, AfterContentInit {
       this.selectionModel.toggle(option.value);
       this.selectionChanged.emit(this.value);
     }
-    this.close();
+    if(!this.selectionModel.isMultipleSelection()) {
+      this.close();
+    }
   }
 
   private highlightSelectedOptions() {
@@ -161,7 +183,7 @@ export class SelectComponent<T> implements OnChanges, AfterContentInit {
     this.selectionModel.select(...valuesWithUpdatedreferences);
   }
 
-  private findOptionsByValue(value: SelectedValue<T>) {
+  private findOptionsByValue(value: T | null) {
     if (this.optionMap.has(value)) {
       return this.optionMap.get(value);
     }

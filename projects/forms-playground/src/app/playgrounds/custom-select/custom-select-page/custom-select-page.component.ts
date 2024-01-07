@@ -7,6 +7,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { SelectModule } from 'customFormControls';
 import { User } from '../../../core/users';
+import { SelectValue } from 'projects/custom-form-controls/src/public-api';
 
 @Component({
   selector: 'app-custom-select-page',
@@ -17,7 +18,10 @@ import { User } from '../../../core/users';
   imports: [CommonModule, SelectModule],
 })
 export class CustomSelectPageComponent implements OnInit {
-  selectValue = new User(3, 'Marie Curie', 'marie', 'Poland/French');
+  selectValue: SelectValue<User> = [
+    new User(3, 'Marie Curie', 'marie', 'Poland/French'),
+    new User(1, 'Albert Einstein', 'albert', 'Germany/USA'),
+  ];
   users: User[] = [
     new User(1, 'Albert Einstein', 'albert', 'Germany/USA'),
     new User(2, 'Niels Bohr', 'niels', 'Denmark'),
