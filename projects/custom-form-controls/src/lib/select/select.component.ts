@@ -13,6 +13,7 @@ import {
   Component,
   ContentChildren,
   DestroyRef,
+  ElementRef,
   EventEmitter,
   HostBinding,
   HostListener,
@@ -21,6 +22,7 @@ import {
   Output,
   QueryList,
   SimpleChanges,
+  ViewChild,
   inject,
 } from '@angular/core';
 import { OptionComponent } from './option/option.component';
@@ -49,10 +51,9 @@ export type SelectValue<T> = T | T[] | null;
 })
 export class SelectComponent<T> implements OnChanges, AfterContentInit {
   @Input({ required: true }) label = '';
-
+  @Input() searchable = false;
   @Input() displayWith: ((value: T) => string | number) | null = null;
-  @Input() compareyWith: (v1: T | null, v2: T | null) => boolean = (v1, v2) =>
-    v1 === v2;
+  @Input() compareyWith: (v1: T | null, v2: T | null) => boolean = (v1, v2) => v1 === v2;
 
   @Input()
   set value(value: SelectValue<T>) {
@@ -78,13 +79,22 @@ export class SelectComponent<T> implements OnChanges, AfterContentInit {
   @Output() readonly selectionChanged = new EventEmitter<SelectValue<T>>();
   @Output() readonly opened = new EventEmitter<void>();
   @Output() readonly closed = new EventEmitter<void>();
+  @Output() readonly searchChanged = new EventEmitter<string>();
+
 
   @HostListener('click') open() {
     this.isOpen = true;
+    if (this.searchable) {
+      setTimeout(() => {
+        this.searchInputEl.nativeElement.focus();
+      }, 0);
+    }
   }
 
   @ContentChildren(OptionComponent, { descendants: true })
   options!: QueryList<OptionComponent<T>>;
+
+  @ViewChild('input') searchInputEl!: ElementRef<HTMLInputElement>;
 
   @HostBinding('class.select-panel-open')
   isOpen = false;
@@ -131,7 +141,11 @@ export class SelectComponent<T> implements OnChanges, AfterContentInit {
     this.isOpen = false;
   }
 
-  onPanelAnimationDone({ fromState, toState }: AnimationEvent) {
+  protected onHandleInput(event: Event) {
+    this.searchChanged.emit((event.target as HTMLInputElement).value);
+  }
+
+  protected onPanelAnimationDone({ fromState, toState }: AnimationEvent) {
     if (fromState === 'void' && toState === null && this.isOpen) {
       this.opened.emit();
     }

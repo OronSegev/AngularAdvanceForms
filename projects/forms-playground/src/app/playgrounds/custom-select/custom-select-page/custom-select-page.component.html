@@ -1,10 +1,13 @@
 <lib-select
-  [displayWith]="displayWith"
+  label="my label"
   multiple="true"
+  [displayWith]="displayWith"
+  [searchable]="true"
   [compareyWith]="comparewith"
   [value]="selectValue"
+  (closed)="onSearchChanged('')"
   (selectionChanged)="onSelectionChanged($event)"
-  label="my label"
+  (searchChanged)="onSearchChanged($event)"
 >
-  <lib-option *ngFor="let user of users" [value]="user">{{user.name}}</lib-option>
+  <lib-option *ngFor="let user of filteredUser" [value]="user">{{user.name}}</lib-option>
 </lib-select>

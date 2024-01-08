@@ -29,9 +29,15 @@ export class CustomSelectPageComponent implements OnInit {
     new User(4, 'IsaacNewton', 'isaac', 'United Kingdom', true),
   ];
 
+  filteredUser = this.users;
+
   constructor(private cd: ChangeDetectorRef) {}
 
   ngOnInit(): void {}
+
+  onSearchChanged(queryString: string) {
+    this.filteredUser = this.users.filter(user => user.name.toLowerCase().startsWith(queryString.toLowerCase()));
+  }
 
   displayWith(user: User) {
     return user.name;
