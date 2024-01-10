@@ -52,6 +52,8 @@ export type SelectValue<T> = T | T[] | null;
 export class SelectComponent<T> implements OnChanges, AfterContentInit {
   @Input({ required: true }) label = '';
   @Input() searchable = false;
+  @HostBinding('class.disabled')
+  @Input() disabled = false;
   @Input() displayWith: ((value: T) => string | number) | null = null;
   @Input() compareyWith: (v1: T | null, v2: T | null) => boolean = (v1, v2) => v1 === v2;
 
@@ -83,6 +85,7 @@ export class SelectComponent<T> implements OnChanges, AfterContentInit {
 
 
   @HostListener('click') open() {
+    if (this.disabled) return;
     this.isOpen = true;
     if (this.searchable) {
       setTimeout(() => {
@@ -138,6 +141,7 @@ export class SelectComponent<T> implements OnChanges, AfterContentInit {
   }
 
   close() {
+    if (this.disabled) return;
     this.isOpen = false;
   }
 
@@ -185,6 +189,7 @@ export class SelectComponent<T> implements OnChanges, AfterContentInit {
   }
 
   private handleSelection(option: OptionComponent<T>) {
+    if (this.disabled) return
     if (option.value) {
       this.selectionModel.toggle(option.value);
       this.selectionChanged.emit(this.value);
