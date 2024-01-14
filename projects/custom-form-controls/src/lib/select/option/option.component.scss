@@ -27,6 +27,9 @@
     pointer-events: none;
     border: var(--color-text-light) dashed 1px;
   }
+  &.active {
+    border: var(--color-text-light, #e5f2f8) 1px dashed;
+  }
 }
 
 .option-content {

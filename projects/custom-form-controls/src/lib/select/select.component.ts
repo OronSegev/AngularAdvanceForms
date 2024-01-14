@@ -33,6 +33,7 @@ import { merge, startWith, switchMap, takeUntil, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ActiveDescendantKeyManager} from '@angular/cdk/a11y'
 
 export type SelectValue<T> = T | T[] | null;
 
@@ -106,6 +107,20 @@ export class SelectComponent<T> implements OnInit, OnChanges, AfterContentInit, 
     this.cd.markForCheck();
   }
 
+  @HostListener('keydown', ['$event']) protected onKeyDown(e: KeyboardEvent) {
+    if (e.key === 'ArrowDown' && !this.isOpen) {
+      this.open();
+      return;
+    }
+    if ((e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
+      this.listKeyManager.onKeydown(e);
+      return;
+    }
+    if (e.key === 'Enter' && this.isOpen && this.listKeyManager.activeItem) {
+      this.handleSelection(this.listKeyManager.activeItem);
+    }
+  }
+
   @ContentChildren(OptionComponent, { descendants: true })
   options!: QueryList<OptionComponent<T>>;
 
@@ -145,12 +160,21 @@ export class SelectComponent<T> implements OnInit, OnChanges, AfterContentInit, 
 
   private optionMap = new Map< SelectValue<T> | T | null, OptionComponent<T>>();
   private destroyRef = inject(DestroyRef);
+  private listKeyManager!: ActiveDescendantKeyManager<OptionComponent<T>>;
 
-  constructor(@Attribute('multiple') private multiple: string | null, private cd: ChangeDetectorRef) {}
+  constructor(@Attribute('multiple') private multiple: string | null, private cd: ChangeDetectorRef, private hostEl: ElementRef) {}
 
   ngOnInit(): void {}
 
   ngAfterContentInit(): void {
+    this.listKeyManager = new ActiveDescendantKeyManager(this.options).withWrap();
+    this.listKeyManager.change.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(itemIndex=> {
+      // scroll the element into view
+      this.options.get(itemIndex)?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+      });
+    });
     this.handleSelectionModelChanged();
     this.handleOptionsChanged();
   }
@@ -191,6 +215,7 @@ export class SelectComponent<T> implements OnInit, OnChanges, AfterContentInit, 
     if (this.disabled) return;
     this.isOpen = false;
     this.onTouched();
+    this.hostEl.nativeElement.focus();
     this.cd.markForCheck();
   }
 
