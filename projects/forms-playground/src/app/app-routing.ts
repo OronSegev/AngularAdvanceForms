@@ -28,4 +28,10 @@ export const routes: Routes = [
     loadComponent: () => import('./playgrounds/custom-select/custom-select-page/custom-select-page.component')
       .then(m => m.CustomSelectPageComponent)
   },
+  {
+    path: 'dynamic-forms',
+    title: 'Dynamic Forms Component Playground (Advanced)',
+    loadComponent: () => import('./playgrounds/dynamic-forms/dynamic-forms-page/dynamic-forms-page.component')
+      .then(m => m.DynamicFormsPageComponent)
+  },
 ];
