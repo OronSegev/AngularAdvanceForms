@@ -1,1 +1,10 @@
-<p>Something awersome is going to be here 😉</p>
+<div class="action-button">
+  <button type="button" (click)="formLoadingTrigger.next('user')">Load User Form</button>
+  <button type="button" (click)="formLoadingTrigger.next('company')">Load Company Form</button>
+</div>
+
+<div *ngIf="fromConfig$ | async as fromConfig" class="dynamic-form-container">
+  <form action="">
+    <pre>{{ fromConfig | json }}</pre>
+  </form>
+</div>
