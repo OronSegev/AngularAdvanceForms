@@ -19,20 +19,12 @@
   --font-size-h1: 34px;
 }
 
-body,
-html,
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-span {
+body, html, p, h1, h2, h3, h4, h5, span {
   padding: 0;
   margin: 0;
 }
 body {
-  font-family: "Poppins";
+  font-family: 'Poppins';
   background-color: var(--color-background);
 }
 
@@ -54,10 +46,7 @@ form {
   max-width: 450px;
 }
 
-label,
-input:not([type="checkbox"]),
-fieldset,
-button {
+label, input:not([type="checkbox"]), fieldset, button {
   width: 100%;
   box-sizing: border-box;
 }
@@ -94,17 +83,15 @@ button {
   }
 }
 
-input {
-  border: var(--color-text) solid 1px;
+input, select {
+  border: var(--color-text) solid 2px;
 }
 
 legend {
   font-weight: bold;
 }
 
-input,
-button,
-select {
+input, button, select {
   border-radius: 5px;
   font-size: 18px;
   padding: 10px 11px;
@@ -114,7 +101,48 @@ select {
   width: 100%;
 }
 
+.ng-valid.ng-dirty:not([formGroupName]):not([formArrayName]):not([ngModelGroup]):not(form):not(paper-textarea)
+{
+  border: 2px solid var(--color-success);
+}
+.ng-invalid.ng-dirty:not([ngModelGroup="address"]):not([formGroupName="address"]):not([formArrayName]):not(form) {
+  border: 2px solid var(--color-error);
+}
 
+
+button[disabled] {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-color: rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+}
+
+@keyframes input-message-animation {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+@mixin input-message() {
+  font-size: 12px;
+  box-sizing: border-box;
+  padding: 2px 13px;
+  animation-name: input-message-animation;
+  animation-duration: 300ms;
+}
+
+.input-error {
+  @include input-message();
+  color: var(--color-error);
+}
+.input-info {
+  @include input-message();
+  color: var(--color-info)
+}
 .review-textarea {
   border-radius: var(--border-radius);
   background-color: white;
@@ -122,15 +150,14 @@ select {
   margin-top: var(--spacing-step);
   min-height: 74px;
   box-sizing: border-box;
-
   h4 {
     margin-bottom: var(--spacing-step);
-    &:empty:before{
+    &:empty:before {
       content: attr(data-placeholder);
       opacity: 0.6;
     }
   }
-  p, div{
+  p, div {
     &:empty:before {
       content: attr(data-placeholder);
       opacity: 0.6;
