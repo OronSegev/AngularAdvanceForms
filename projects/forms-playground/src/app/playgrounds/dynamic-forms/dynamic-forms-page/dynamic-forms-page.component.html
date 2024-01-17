@@ -1,10 +1,35 @@
 <div class="action-button">
-  <button type="button" (click)="formLoadingTrigger.next('user')">Load User Form</button>
-  <button type="button" (click)="formLoadingTrigger.next('company')">Load Company Form</button>
+  <button type="button" (click)="formLoadingTrigger.next('user')">
+    Load User Form
+  </button>
+  <button type="button" (click)="formLoadingTrigger.next('company')">
+    Load Company Form
+  </button>
 </div>
 
 <div *ngIf="fromConfig$ | async as fromConfig" class="dynamic-form-container">
-  <form action="">
-    <pre>{{ fromConfig | json }}</pre>
+  <form [formGroup]="form" (ngSubmit)="onSumbit()">
+    <h3 class="form-heading">{{ fromConfig.description }}</h3>
+    <div
+      *ngFor="let control of fromConfig.controls | keyvalue"
+      class="form-field"
+    >
+      <label [for]="control.key">{{ control.value.label }}</label>
+      <ng-container [ngSwitch]="control.value.controlType">
+        <input
+          *ngSwitchCase="'input'"
+          [formControlName]="control.key"
+          [value]="control.value.value"
+          [id]="control.key"
+          [type]="control.value.type"
+        />
+        <ng-container *ngSwitchCase="'select'">
+          <select [formControlName]="control.key" [id]="control.key" [value]="control.value.value">
+            <option *ngFor="let option of control.value.options" [value]="option.value">{{option.value}}</option>
+          </select>
+        </ng-container>
+      </ng-container>
+    </div>
+    <button>Save</button>
   </form>
 </div>
