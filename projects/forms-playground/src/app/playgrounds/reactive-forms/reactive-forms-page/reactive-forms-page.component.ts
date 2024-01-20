@@ -20,7 +20,7 @@ import {
 import { Observable, bufferCount, filter, startWith, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UserSkillsService } from '../../../core/user-skills.service';
-import { banwords } from '../validators/ban-words';
+import { banWords } from '../validators/ban-words';
 import { passwordShouldmatch } from '../validators/password-should-match';
 import { UinqueNicknameValidator } from '../validators/uinque-nicknameValidator';
 
@@ -42,7 +42,7 @@ export class ReactiveFormsPageComponent implements OnInit {
   form = this.fb.group({
     firstName: [
       'Oron',
-      [Validators.required, Validators.minLength(2), banwords(['test'])],
+      [Validators.required, Validators.minLength(2), banWords(['test'])],
     ],
     lastName: ['Segev', [Validators.required, Validators.minLength(2)]],
     nickname: [
@@ -52,7 +52,7 @@ export class ReactiveFormsPageComponent implements OnInit {
           Validators.required,
           Validators.minLength(2),
           Validators.pattern(/^[\w]+$/),
-          banwords(['test', 'dummy']),
+          banWords(['test', 'dummy']),
         ],
         asyncValidators: [
           this.uniqeNicknameValidator.validate.bind(

@@ -12,7 +12,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { banwords } from '../../reactive-forms/validators/ban-words';
+import { banWords } from '../../reactive-forms/validators/ban-words';
 
 @Component({
   selector: 'app-dynamic-forms-page',
@@ -54,7 +54,7 @@ export class DynamicFormsPageComponent implements OnInit {
   }
 
   private resolveValidators({ validators = {} }: DynamicControl) {
-    return Object.keys(validators).map((validatorKey) => {
+    return (Object.keys(validators) as Array<keyof typeof validators>).map((validatorKey) => {
       const validatorValue = validators[validatorKey];
       if (validatorKey === 'required') {
         return Validators.required;
@@ -65,8 +65,8 @@ export class DynamicFormsPageComponent implements OnInit {
       if (validatorKey === 'minLength' && typeof validatorValue === 'number') {
         return Validators.minLength(validatorValue);
       }
-      if (validatorKey === 'banwords' && Array.isArray(validatorValue)) {
-        return banwords(validatorValue);
+      if (validatorKey === 'banWords' && Array.isArray(validatorValue)) {
+        return banWords(validatorValue);
       }
       return Validators.nullValidator;
     });
