@@ -5,7 +5,7 @@ export interface DynamicOptions {
   value: string;
 }
 
-type CustomValidators = { banWords: ValidatorFn}
+type CustomValidators = { banWords: ValidatorFn }
 type validatorKeys = keyof Omit<typeof Validators & CustomValidators, 'prototype' | 'compose' | 'composeAsync'>
 
 export interface DynamicControl<T = string> {
