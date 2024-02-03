@@ -14,7 +14,6 @@
       *ngFor="let control of fromConfig.controls | keyvalue"
       class="form-field"
     >
-      <label [for]="control.key">{{ control.value.label }}</label>
       <ng-container
         [ngComponentOutlet]="controlResolver.resolve(control.value.controlType)"
         [ngComponentOutletInjector]="control.key | controlInjector:control.value"
