@@ -15,7 +15,11 @@
       class="form-field"
     >
       <label [for]="control.key">{{ control.value.label }}</label>
-      <ng-container [ngSwitch]="control.value.controlType">
+      <ng-container
+        [ngComponentOutlet]="controlResolver.resolve(control.value.controlType)"
+        [ngComponentOutletInjector]="control.key | controlInjector:control.value"
+      ></ng-container>
+      <!-- <ng-container [ngSwitch]="control.value.controlType">
         <input
           *ngSwitchCase="'input'"
           [formControlName]="control.key"
@@ -28,11 +32,11 @@
             <option *ngFor="let option of control.value.options" [value]="option.value">{{option.value}}</option>
           </select>
         </ng-container>
-        <div *ngIf="form.get(control.key)?.dirty && form.get(control.key)?.hasError('required')" class="input-error">This Field is required</div>
-        <div *ngIf="form.get(control.key)?.dirty && form.get(control.key)?.hasError('email')" class="input-error">It must be a valid Email</div>
-        <div *ngIf="form.get(control.key)?.dirty && form.get(control.key)?.hasError('minLength')" class="input-error">The Field must be at least {{form.get(control.key)?.getError('minLength').requiredLength}} characters</div>
-        <div *ngIf="form.get(control.key)?.dirty && form.get(control.key)?.hasError('banWords')" class="input-error">This word is invalid</div>
-      </ng-container>
+      </ng-container> -->
+      <div *ngIf="form.get(control.key)?.dirty && form.get(control.key)?.hasError('required')" class="input-error">This Field is required</div>
+      <div *ngIf="form.get(control.key)?.dirty && form.get(control.key)?.hasError('email')" class="input-error">It must be a valid Email</div>
+      <div *ngIf="form.get(control.key)?.dirty && form.get(control.key)?.hasError('minLength')" class="input-error">The Field must be at least {{form.get(control.key)?.getError('minLength').requiredLength}} characters</div>
+      <div *ngIf="form.get(control.key)?.dirty && form.get(control.key)?.hasError('banWords')" class="input-error">This word is invalid</div>
     </div>
     <button [disabled]="form.invalid">Save</button>
   </form>

@@ -13,13 +13,15 @@ import {
   Validators,
 } from '@angular/forms';
 import { banWords } from '../../reactive-forms/validators/ban-words';
+import { DynamicControlResolver } from '../dynamic-controls/dynamic-control-resolver.service';
+import { ControlInjectorPipe } from "../control-injector.pipe";
 
 @Component({
-  selector: 'app-dynamic-forms-page',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './dynamic-forms-page.component.html',
-  styleUrls: ['../../common-page.scss', './dynamic-forms-page.component.scss'],
+    selector: 'app-dynamic-forms-page',
+    standalone: true,
+    templateUrl: './dynamic-forms-page.component.html',
+    styleUrls: ['../../common-page.scss', './dynamic-forms-page.component.scss'],
+    imports: [CommonModule, ReactiveFormsModule, ControlInjectorPipe]
 })
 export class DynamicFormsPageComponent implements OnInit {
   form!: FormGroup;
@@ -27,7 +29,7 @@ export class DynamicFormsPageComponent implements OnInit {
   protected formLoadingTrigger = new Subject<'user' | 'company'>();
   protected fromConfig$!: Observable<DynamicFormConfig>;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, public controlResolver: DynamicControlResolver) {}
 
   ngOnInit(): void {
     this.fromConfig$ = this.formLoadingTrigger.pipe(
@@ -56,6 +58,7 @@ export class DynamicFormsPageComponent implements OnInit {
   private resolveValidators({ validators = {} }: DynamicControl) {
     return (Object.keys(validators) as Array<keyof typeof validators>).map((validatorKey) => {
       const validatorValue = validators[validatorKey];
+      debugger;
       if (validatorKey === 'required') {
         return Validators.required;
       }
