@@ -31,6 +31,34 @@
         { "label": "Guest", "value": "guest" }
       ]
     },
+    "socialProfiles": {
+      "controlType": "group",
+      "label": "Links to Social Profiles",
+      "order": 3,
+      "controls": {
+        "youtube": {
+          "controlType": "input",
+          "label": "YouTube",
+          "value": null,
+          "type": "text",
+          "order": 0
+        },
+        "twitter": {
+          "controlType": "input",
+          "label": "Twitter",
+          "value": null,
+          "type": "text",
+          "order": 1
+        },
+        "instagram": {
+          "controlType": "input",
+          "label": "Instagram",
+          "value": null,
+          "type": "text",
+          "order": 2
+        }
+      }
+    },
     "terms": {
       "controlType": "checkbox",
       "label": "Terms & Conditions were accepted",
