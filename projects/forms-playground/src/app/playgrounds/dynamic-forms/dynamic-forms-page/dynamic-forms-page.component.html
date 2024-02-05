@@ -10,10 +10,7 @@
 <div *ngIf="fromConfig$ | async as fromConfig" class="dynamic-form-container">
   <form [formGroup]="form" (ngSubmit)="onSumbit()">
     <h3 class="form-heading">{{ fromConfig.description }}</h3>
-    <div
-      *ngFor="let control of fromConfig.controls | keyvalue"
-      class="form-field"
-    >
+    <ng-container *ngFor="let control of fromConfig.controls | keyvalue">
       <ng-container
         [ngComponentOutlet]="controlResolver.resolve(control.value.controlType)"
         [ngComponentOutletInjector]="control.key | controlInjector:control.value"
@@ -22,7 +19,7 @@
       <div *ngIf="form.get(control.key)?.dirty && form.get(control.key)?.hasError('email')" class="input-error">It must be a valid Email</div>
       <div *ngIf="form.get(control.key)?.dirty && form.get(control.key)?.hasError('minLength')" class="input-error">The Field must be at least {{form.get(control.key)?.getError('minLength').requiredLength}} characters</div>
       <div *ngIf="form.get(control.key)?.dirty && form.get(control.key)?.hasError('banWords')" class="input-error">This word is invalid</div>
-    </div>
+    </ng-container>
     <button [disabled]="form.invalid">Save</button>
   </form>
 </div>
