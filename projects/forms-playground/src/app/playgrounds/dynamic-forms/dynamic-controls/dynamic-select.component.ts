@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BaseDynamicControl, dynamicControlProvider } from './base-dynamic-control';
@@ -7,9 +7,7 @@ import { BaseDynamicControl, dynamicControlProvider } from './base-dynamic-contr
   selector: 'app-dynamic-select',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  viewProviders: [
-    dynamicControlProvider
-  ],
+  viewProviders: [dynamicControlProvider],
   template: `
     <label [for]="control.controlKey">{{ control.config.label }}</label>
     <select [formControlName]="control.controlKey" [id]="control.controlKey" [value]="control.config.value">

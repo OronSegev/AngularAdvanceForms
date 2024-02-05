@@ -7,9 +7,7 @@ import { BaseDynamicControl, dynamicControlProvider } from './base-dynamic-contr
   selector: 'app-dynamic-checkbox',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  viewProviders: [
-    dynamicControlProvider
-  ],
+  viewProviders: [dynamicControlProvider],
   template: `
     <input type="checkbox" [formControlName]="control.controlKey" [id]="control.controlKey" [checked]="control.config.value">
     <label [for]="control.controlKey">{{ control.config.label }}</label>
