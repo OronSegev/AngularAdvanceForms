@@ -6,6 +6,7 @@
       "type": "text",
       "label": "Full Name",
       "value": "",
+      "order": 1,
       "validators": {
         "required": true,
         "minLength": 2,
@@ -17,6 +18,7 @@
       "type": "email",
       "label": "Email",
       "value": "",
+      "order": 0,
       "validators": {
         "email": true
       }
@@ -25,6 +27,7 @@
       "controlType": "select",
       "label": "User Role",
       "value": "",
+      "order": 2,
       "options": [
         { "label": "Admin", "value": "admin" },
         { "label": "Editor", "value": "editor" },
@@ -41,7 +44,7 @@
           "label": "YouTube",
           "value": null,
           "type": "text",
-          "order": 0
+          "order": 2
         },
         "twitter": {
           "controlType": "input",
@@ -55,7 +58,7 @@
           "label": "Instagram",
           "value": null,
           "type": "text",
-          "order": 2
+          "order": 0
         }
       }
     },
@@ -63,6 +66,7 @@
       "controlType": "checkbox",
       "label": "Terms & Conditions were accepted",
       "value": false,
+      "order": 4,
       "validators": {
         "requiredTrue": true
       }

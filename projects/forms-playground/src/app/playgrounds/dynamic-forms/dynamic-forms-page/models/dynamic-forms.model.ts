@@ -13,6 +13,7 @@ export interface DynamicControl<T = string> {
   type?: string;
   label: string;
   value: T | null;
+  order: number,
   options?: DynamicOptions[];
   controls?: DynamicFormConfig['controls'],
   validators?: {
