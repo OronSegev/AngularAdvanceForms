@@ -22,7 +22,7 @@ import { VALIDATION_ERROR_MESSAGES } from './validation-error-messages.token';
   ]
 })
 export class InputErrorComponent {
-  @Input() errors!: ValidationErrors | undefined | null = null;
+  @Input() errors: ValidationErrors | undefined | null = null;
 
   protected errorsMap = inject(VALIDATION_ERROR_MESSAGES);
 }

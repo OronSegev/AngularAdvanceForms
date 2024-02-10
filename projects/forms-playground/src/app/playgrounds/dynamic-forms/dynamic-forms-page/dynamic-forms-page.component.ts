@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { CommonModule, KeyValue } from '@angular/common';
 import { Observable, Subject, map, switchMap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -8,13 +8,21 @@ import { DynamicControlResolver } from '../dynamic-controls/dynamic-control-reso
 import { ControlInjectorPipe } from "../control-injector.pipe";
 import { comparatorFn } from '../dynamic-controls/base-dynamic-control';
 import { InputErrorComponent } from '../../../core/input-error/input-error.component';
+import { ERROR_MESSAGE, VALIDATION_ERROR_MESSAGES } from '../../../core/input-error/validation-error-messages.token';
 
 @Component({
     selector: 'app-dynamic-forms-page',
     standalone: true,
     templateUrl: './dynamic-forms-page.component.html',
     styleUrls: ['../../common-page.scss', './dynamic-forms-page.component.scss'],
-    imports: [CommonModule, ReactiveFormsModule, ControlInjectorPipe, InputErrorComponent]
+    imports: [CommonModule, ReactiveFormsModule, ControlInjectorPipe, InputErrorComponent],
+    providers: [
+      {
+        provide: VALIDATION_ERROR_MESSAGES,
+        useValue: {...ERROR_MESSAGE, required: `Don't leave this field empty`}
+      }
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DynamicFormsPageComponent implements OnInit {
 
