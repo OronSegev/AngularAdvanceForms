@@ -8,12 +8,10 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
   FormGroupDirective,
-  FormRecord,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -23,11 +21,12 @@ import { UserSkillsService } from '../../../core/user-skills.service';
 import { banWords } from '../validators/ban-words';
 import { passwordShouldmatch } from '../validators/password-should-match';
 import { UinqueNicknameValidator } from '../validators/uinque-nicknameValidator';
+import { InputErrorComponent } from '../../../core/input-error/input-error.component';
 
 @Component({
   selector: 'app-reactive-forms-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, InputErrorComponent],
   templateUrl: './reactive-forms-page.component.html',
   styleUrls: ['../../common-page.scss', './reactive-forms-page.component.scss'],
 })

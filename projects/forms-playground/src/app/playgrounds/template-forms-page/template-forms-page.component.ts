@@ -12,6 +12,7 @@ import {
   PasswordShouldMatchDirective,
   UniqeNicknameDirective,
 } from './validators/index';
+import { InputErrorComponent } from '../../core/input-error/input-error.component';
 
 @Component({
   selector: 'app-template-forms-page',
@@ -22,6 +23,7 @@ import {
     BanWordsDirective,
     PasswordShouldMatchDirective,
     UniqeNicknameDirective,
+    InputErrorComponent
   ],
   templateUrl: './template-forms-page.component.html',
   styleUrls: [

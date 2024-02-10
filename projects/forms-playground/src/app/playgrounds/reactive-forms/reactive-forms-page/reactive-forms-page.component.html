@@ -9,27 +9,7 @@
       placeholder="Enter your name"
     />
     <ng-container *ngIf="form.controls.firstName as firstName">
-      <div
-        class="input-error"
-        *ngIf="firstName.dirty && firstName.hasError('required')"
-      >
-        This field is required
-      </div>
-      <div
-        class="input-error"
-        *ngIf="firstName.dirty && firstName.hasError('minlength')"
-      >
-        This name must be at least
-        {{ firstName.getError("minlength").requiredLength }} characters
-      </div>
-      <div
-        class="input-error"
-        *ngIf="firstName.dirty && firstName.hasError('banWords')"
-      >
-        This value
-        <strong>{{ firstName.getError("banWords").bannedWords }}</strong
-        >is not allowed
-      </div>
+      <app-input-error *ngIf="firstName.dirty" [errors]="firstName.errors"></app-input-error>
     </ng-container>
   </div>
   <div class="form-field">
@@ -41,19 +21,7 @@
       placeholder="Enter your last name"
     />
     <ng-container *ngIf="form.controls.lastName as lastName">
-      <div
-        class="input-error"
-        *ngIf="lastName.dirty && lastName.hasError('required')"
-      >
-        This field is required
-      </div>
-      <div
-        class="input-error"
-        *ngIf="lastName.dirty && lastName.hasError('minlength')"
-      >
-        This name must be at least
-        {{ lastName.getError("minlength").requiredLength }} characters
-      </div>
+      <app-input-error *ngIf="lastName.dirty" [errors]="lastName.errors"></app-input-error>
     </ng-container>
   </div>
   <div class="form-field">
@@ -65,39 +33,7 @@
       placeholder="Come up with a nick name"
     />
     <ng-container *ngIf="form.controls.nickname as nickname">
-      <div
-        class="input-error"
-        *ngIf="nickname.dirty && nickname.hasError('required')"
-      >
-        This field is required
-      </div>
-      <div
-        class="input-error"
-        *ngIf="nickname.dirty && nickname.hasError('uniqeName')"
-      >
-        This Nickname is already taken
-      </div>
-      <div
-        class="input-info"
-        *ngIf="nickname.pending"
-      >
-        Checking nickname...
-      </div>
-      <div
-        class="input-error"
-        *ngIf="nickname.dirty && nickname.hasError('minlength')"
-      >
-        This name must be at least
-        {{ nickname.getError("minlength").requiredLength }} characters
-      </div>
-      <div
-        class="input-error"
-        *ngIf="nickname.dirty && nickname.hasError('banWords')"
-      >
-        This value
-        <strong>{{ nickname.getError("banWords").bannedWords }}</strong
-        >is not allowed
-      </div>
+      <app-input-error *ngIf="nickname.dirty" [errors]="nickname.errors"></app-input-error>
     </ng-container>
   </div>
   <div class="form-field">
@@ -109,9 +45,7 @@
       placeholder="Provide your email"
     />
     <ng-container *ngIf="form.controls.email as email">
-      <div class="input-error" *ngIf="email.dirty && email.hasError('email')">
-        Must be a valid Email
-      </div>
+      <app-input-error *ngIf="email.dirty" [errors]="email.errors"></app-input-error>
     </ng-container>
   </div>
   <div class="form-field-inline-group">
@@ -130,18 +64,7 @@
         placeholder="Provide Passport Data"
       />
       <ng-container *ngIf="form.controls.passport as passport">
-        <div
-          class="input-error"
-          *ngIf="passport.dirty && passport.hasError('pattern')"
-        >
-          Must be a valid Passport
-        </div>
-        <div
-          class="input-error"
-          *ngIf="passport.dirty && passport.hasError('required')"
-        >
-          Passport is required for adults
-        </div>
+        <app-input-error *ngIf="passport.dirty" [errors]="passport.errors"></app-input-error>
       </ng-container>
     </div>
   </div>
@@ -158,24 +81,14 @@
       <ng-container
         *ngIf="form.controls.address.controls.fullAddress as fullAddress"
       >
-        <div
-          class="input-error"
-          *ngIf="fullAddress.dirty && fullAddress.hasError('required')"
-        >
-          This field is required
-        </div>
+        <app-input-error *ngIf="fullAddress.dirty" [errors]="fullAddress.errors"></app-input-error>
       </ng-container>
     </div>
     <div class="form-field">
       <label for="city">City</label>
       <input formControlName="city" type="text" id="city" placeholder="City" />
       <ng-container *ngIf="form.controls.address.controls.city as city">
-        <div
-          class="input-error"
-          *ngIf="city.dirty && city.hasError('required')"
-        >
-          This field is required
-        </div>
+        <app-input-error *ngIf="city.dirty" [errors]="city.errors"></app-input-error>
       </ng-container>
     </div>
     <div class="form-field">
@@ -187,12 +100,7 @@
         placeholder="Post code"
       />
       <ng-container *ngIf="form.controls.address.controls.postcode as postcode">
-        <div
-          class="input-error"
-          *ngIf="postcode.dirty && postcode.hasError('required')"
-        >
-          This field is required
-        </div>
+        <app-input-error *ngIf="postcode.dirty" [errors]="postcode.errors"></app-input-error>
       </ng-container>
     </div>
   </fieldset>
@@ -252,19 +160,7 @@
       <ng-container
         *ngIf="form.controls.password.controls.password as password"
       >
-        <div
-          class="input-error"
-          *ngIf="password.dirty && password.hasError('required')"
-        >
-          Password required
-        </div>
-        <div
-          class="input-error"
-          *ngIf="password.dirty && password.hasError('minlength')"
-        >
-          The password must be at least
-          {{ password.getError("minlength").requiredLength }} characters
-        </div>
+        <app-input-error *ngIf="password.dirty" [errors]="password.errors"></app-input-error>
       </ng-container>
     </div>
     <div class="form-field">
@@ -275,20 +171,8 @@
         id="confirm-password"
         placeholder="Enter password..."
       />
-      <ng-container
-        *ngIf="
-          form.controls.password.controls.confirmPassword as confirmPasswords
-        "
-      >
-        <div
-          class="input-error"
-          *ngIf="
-            confirmPasswords.dirty &&
-            confirmPasswords.hasError('passwordShouldmatch')
-          "
-        >
-          Password Mismatch
-        </div>
+      <ng-container *ngIf="form.controls.password.controls.confirmPassword as confirmPasswords">
+        <app-input-error *ngIf="confirmPasswords.dirty" [errors]="confirmPasswords.errors"></app-input-error>
       </ng-container>
     </div>
   </fieldset>
