@@ -3,20 +3,18 @@ import { CommonModule, KeyValue } from '@angular/common';
 import { Observable, Subject, map, switchMap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { DynamicFormConfig } from './models/dynamic-forms.model';
-import {
-  FormGroup,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DynamicControlResolver } from '../dynamic-controls/dynamic-control-resolver.service';
 import { ControlInjectorPipe } from "../control-injector.pipe";
 import { comparatorFn } from '../dynamic-controls/base-dynamic-control';
+import { InputErrorComponent } from '../../../core/input-error/input-error.component';
 
 @Component({
     selector: 'app-dynamic-forms-page',
     standalone: true,
     templateUrl: './dynamic-forms-page.component.html',
     styleUrls: ['../../common-page.scss', './dynamic-forms-page.component.scss'],
-    imports: [CommonModule, ReactiveFormsModule, ControlInjectorPipe]
+    imports: [CommonModule, ReactiveFormsModule, ControlInjectorPipe, InputErrorComponent]
 })
 export class DynamicFormsPageComponent implements OnInit {
 
