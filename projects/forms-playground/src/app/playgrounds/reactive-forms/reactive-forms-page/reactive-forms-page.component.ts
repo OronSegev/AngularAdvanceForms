@@ -21,12 +21,12 @@ import { UserSkillsService } from '../../../core/user-skills.service';
 import { banWords } from '../validators/ban-words';
 import { passwordShouldmatch } from '../validators/password-should-match';
 import { UinqueNicknameValidator } from '../validators/uinque-nicknameValidator';
-import { InputErrorComponent } from '../../../core/input-error/input-error.component';
+import { DynamicValidatorMessageDirective } from '../../../core/dynamic-validator-message.directive';
 
 @Component({
   selector: 'app-reactive-forms-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, InputErrorComponent],
+  imports: [CommonModule, ReactiveFormsModule, DynamicValidatorMessageDirective],
   templateUrl: './reactive-forms-page.component.html',
   styleUrls: ['../../common-page.scss', './reactive-forms-page.component.scss'],
 })

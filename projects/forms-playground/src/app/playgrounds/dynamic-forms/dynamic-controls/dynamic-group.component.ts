@@ -1,14 +1,13 @@
 import { Component, HostBinding, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { BaseDynamicControl, comparatorFn, dynamicControlProvider } from './base-dynamic-control';
-import { AbstractControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { BaseDynamicControl, comparatorFn, dynamicControlProvider, sharedDynamicControlsDeps } from './base-dynamic-control';
+import { FormGroup } from '@angular/forms';
 import { ControlInjectorPipe } from "../control-injector.pipe";
 import { DynamicControlResolver } from './dynamic-control-resolver.service';
 
 @Component({
     selector: 'app-dynamic-group',
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, ControlInjectorPipe],
+    imports: [...sharedDynamicControlsDeps, ControlInjectorPipe],
     viewProviders: [dynamicControlProvider],
     template: `
       <fieldset [formGroupName]="control.controlKey">

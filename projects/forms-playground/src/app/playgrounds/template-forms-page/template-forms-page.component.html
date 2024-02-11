@@ -21,7 +21,6 @@
       #firstName="ngModel"
       appBanWords="test"
     />
-    <app-input-error *ngIf="firstName.dirty" [errors]="firstName.errors"></app-input-error>
   </div>
   <div class="form-field">
     <label for="last-name">Last Name</label>
@@ -35,7 +34,6 @@
       minlength="2"
       #lastName="ngModel"
     />
-    <app-input-error *ngIf="lastName.dirty" [errors]="lastName.errors"></app-input-error>
   </div>
   <div class="form-field">
     <label for="nick-name">Nick Name</label>
@@ -51,7 +49,6 @@
       #nickname="ngModel"
       [appBanWords]="isAdult ? ['test', 'test_test', 'dummy'] : []"
     />
-    <app-input-error *ngIf="nickname.dirty" [errors]="nickname.errors"></app-input-error>
     <div class="input-info" *ngIf="nickname.pending">Checking...</div>
   </div>
   <div class="form-field">
@@ -66,7 +63,6 @@
       required
       #email="ngModel"
     />
-    <app-input-error *ngIf="email.dirty" [errors]="email.errors"></app-input-error>
   </div>
   <div class="form-field-inline-group">
     <div class="form-field form-field--small">
@@ -80,7 +76,6 @@
       >
         <option *ngFor="let year of years" [value]="year">{{ year }}</option>
       </select>
-      <app-input-error *ngIf="yearOfBirth.dirty" [errors]="yearOfBirth.errors"></app-input-error>
     </div>
     <div class="form-field form-field--small">
       <label for="passport">Passport Number</label>
@@ -95,7 +90,6 @@
         [required]="isAdult"
         #passport="ngModel"
       />
-      <app-input-error *ngIf="passport.dirty" [errors]="passport.errors"></app-input-error>
     </div>
   </div>
   <fieldset ngModelGroup="address">
@@ -111,7 +105,6 @@
         required
         #fullAddress="ngModel"
       />
-      <app-input-error *ngIf="fullAddress.dirty" [errors]="fullAddress.errors"></app-input-error>
     </div>
     <div class="form-field">
       <label for="city">City</label>
@@ -124,7 +117,6 @@
         required
         #city="ngModel"
       />
-      <app-input-error *ngIf="city.dirty" [errors]="city.errors"></app-input-error>
     </div>
     <div class="form-field">
       <label for="post-code">Post Code</label>
@@ -137,7 +129,6 @@
         required
         #postCode="ngModel"
       />
-      <app-input-error *ngIf="postCode.dirty" [errors]="postCode.errors"></app-input-error>
     </div>
   </fieldset>
   <fieldset
@@ -158,7 +149,6 @@
         id="password"
         placeholder="Enter user's password"
       />
-      <app-input-error *ngIf="password.dirty" [errors]="password.errors"></app-input-error>
     </div>
     <div class="form-field">
       <label for="password">Confirm Password</label>
@@ -172,9 +162,7 @@
         id="confirmPassword"
         placeholder="Enter user's password"
       />
-      <app-input-error *ngIf="confirmPassword.dirty" [errors]="confirmPassword.errors"></app-input-error>
     </div>
-    <app-input-error *ngIf="confirmPassword.dirty" [errors]="passwordGroup.errors"></app-input-error>
   </fieldset>
   <button [disabled]="form.invalid || form.pending">Save</button>
   <button type="reset" class="reset-button">Reset</button>

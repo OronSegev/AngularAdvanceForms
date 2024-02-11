@@ -8,9 +8,6 @@
       id="name"
       placeholder="Enter your name"
     />
-    <ng-container *ngIf="form.controls.firstName as firstName">
-      <app-input-error *ngIf="firstName.dirty" [errors]="firstName.errors"></app-input-error>
-    </ng-container>
   </div>
   <div class="form-field">
     <label for="last-name">Last Name</label>
@@ -20,9 +17,6 @@
       id="last-name"
       placeholder="Enter your last name"
     />
-    <ng-container *ngIf="form.controls.lastName as lastName">
-      <app-input-error *ngIf="lastName.dirty" [errors]="lastName.errors"></app-input-error>
-    </ng-container>
   </div>
   <div class="form-field">
     <label for="nick-name">Nick Name</label>
@@ -32,9 +26,6 @@
       id="nick-name"
       placeholder="Come up with a nick name"
     />
-    <ng-container *ngIf="form.controls.nickname as nickname">
-      <app-input-error *ngIf="nickname.dirty" [errors]="nickname.errors"></app-input-error>
-    </ng-container>
   </div>
   <div class="form-field">
     <label for="email">Email</label>
@@ -44,9 +35,6 @@
       id="email"
       placeholder="Provide your email"
     />
-    <ng-container *ngIf="form.controls.email as email">
-      <app-input-error *ngIf="email.dirty" [errors]="email.errors"></app-input-error>
-    </ng-container>
   </div>
   <div class="form-field-inline-group">
     <div class="form-field form-field--small">
@@ -63,9 +51,6 @@
         id="passport"
         placeholder="Provide Passport Data"
       />
-      <ng-container *ngIf="form.controls.passport as passport">
-        <app-input-error *ngIf="passport.dirty" [errors]="passport.errors"></app-input-error>
-      </ng-container>
     </div>
   </div>
   <fieldset formGroupName="address">
@@ -78,18 +63,10 @@
         id="full-address"
         placeholder="Street name and house number"
       />
-      <ng-container
-        *ngIf="form.controls.address.controls.fullAddress as fullAddress"
-      >
-        <app-input-error *ngIf="fullAddress.dirty" [errors]="fullAddress.errors"></app-input-error>
-      </ng-container>
     </div>
     <div class="form-field">
       <label for="city">City</label>
       <input formControlName="city" type="text" id="city" placeholder="City" />
-      <ng-container *ngIf="form.controls.address.controls.city as city">
-        <app-input-error *ngIf="city.dirty" [errors]="city.errors"></app-input-error>
-      </ng-container>
     </div>
     <div class="form-field">
       <label for="post-code">Post Code</label>
@@ -99,9 +76,6 @@
         id="post-code"
         placeholder="Post code"
       />
-      <ng-container *ngIf="form.controls.address.controls.postcode as postcode">
-        <app-input-error *ngIf="postcode.dirty" [errors]="postcode.errors"></app-input-error>
-      </ng-container>
     </div>
   </fieldset>
   <fieldset formArrayName="phones">
@@ -157,11 +131,6 @@
         id="password"
         placeholder="Enter password..."
       />
-      <ng-container
-        *ngIf="form.controls.password.controls.password as password"
-      >
-        <app-input-error *ngIf="password.dirty" [errors]="password.errors"></app-input-error>
-      </ng-container>
     </div>
     <div class="form-field">
       <label for="confirm-password">Confirm Password</label>
@@ -171,9 +140,6 @@
         id="confirm-password"
         placeholder="Enter password..."
       />
-      <ng-container *ngIf="form.controls.password.controls.confirmPassword as confirmPasswords">
-        <app-input-error *ngIf="confirmPasswords.dirty" [errors]="confirmPasswords.errors"></app-input-error>
-      </ng-container>
     </div>
   </fieldset>
   <button type="submit" [disabled]="form.invalid && form.pending">Save</button>

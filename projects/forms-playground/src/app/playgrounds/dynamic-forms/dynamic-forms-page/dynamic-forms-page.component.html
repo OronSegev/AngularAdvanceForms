@@ -13,9 +13,9 @@
     <ng-container *ngFor="let control of fromConfig.config.controls | keyvalue: coparatorFn">
       <ng-container
         [ngComponentOutlet]="controlResolver.resolve(control.value.controlType) | async"
-        [ngComponentOutletInjector]="control.key | controlInjector:control.value"
-      ></ng-container>
-      <app-input-error *ngIf="fromConfig.form.get(control.key)?.dirty" [errors]="fromConfig.form.get(control.key)?.errors"></app-input-error>    </ng-container>
+        [ngComponentOutletInjector]="control.key | controlInjector:control.value">
+      </ng-container>
+    </ng-container>
     <button [disabled]="fromConfig.form.invalid">Save</button>
   </form>
 </div>

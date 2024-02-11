@@ -7,7 +7,6 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DynamicControlResolver } from '../dynamic-controls/dynamic-control-resolver.service';
 import { ControlInjectorPipe } from "../control-injector.pipe";
 import { comparatorFn } from '../dynamic-controls/base-dynamic-control';
-import { InputErrorComponent } from '../../../core/input-error/input-error.component';
 import { ERROR_MESSAGE, VALIDATION_ERROR_MESSAGES } from '../../../core/input-error/validation-error-messages.token';
 
 @Component({
@@ -15,7 +14,7 @@ import { ERROR_MESSAGE, VALIDATION_ERROR_MESSAGES } from '../../../core/input-er
     standalone: true,
     templateUrl: './dynamic-forms-page.component.html',
     styleUrls: ['../../common-page.scss', './dynamic-forms-page.component.scss'],
-    imports: [CommonModule, ReactiveFormsModule, ControlInjectorPipe, InputErrorComponent],
+    imports: [CommonModule, ReactiveFormsModule, ControlInjectorPipe],
     providers: [
       {
         provide: VALIDATION_ERROR_MESSAGES,
