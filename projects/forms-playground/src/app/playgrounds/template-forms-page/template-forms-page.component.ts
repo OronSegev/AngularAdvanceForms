@@ -73,6 +73,7 @@ export class TemplateFormsPageComponent implements AfterViewInit {
   }
 
   onSubmitForm(form: NgForm) {
+    if(this.formDir.invalid) return;
     console.log('the form has submited, ', form.value);
     // reset form
     this.formDir.resetForm(this.formDir.value)

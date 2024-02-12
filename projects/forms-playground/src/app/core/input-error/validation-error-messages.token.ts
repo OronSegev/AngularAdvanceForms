@@ -1,8 +1,8 @@
 import { InjectionToken } from "@angular/core"
 
 export const ERROR_MESSAGE: {[key: string]: (args?:any) => string} = {
-  require: () => `This field is required`,
-  requireTrue: () => `This field is required`,
+  required: () => `This field is required`,
+  requiredTrue: () => `This field is required`,
   email: () => `It should be a valid email`,
   minlength: ({requiredLength}) => `The length should be at least ${requiredLength} characters`,
   banWords: ({bannedWords}) => `This word "${bannedWords}" isn't allowed`,

@@ -3,6 +3,7 @@
   <div class="form-field">
     <label for="name">First Name</label>
     <input
+      [errorStateMatcher]="showErrorStrategy"
       formControlName="firstName"
       type="text"
       id="name"

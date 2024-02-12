@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   DestroyRef,
@@ -22,6 +23,7 @@ import { banWords } from '../validators/ban-words';
 import { passwordShouldmatch } from '../validators/password-should-match';
 import { UinqueNicknameValidator } from '../validators/uinque-nicknameValidator';
 import { DynamicValidatorMessageDirective } from '../../../core/dynamic-validator-message.directive';
+import { OnDirtyErrorStateMatcher } from '../../../core/input-error/error-state-matcher.service';
 
 @Component({
   selector: 'app-reactive-forms-page',
@@ -29,12 +31,14 @@ import { DynamicValidatorMessageDirective } from '../../../core/dynamic-validato
   imports: [CommonModule, ReactiveFormsModule, DynamicValidatorMessageDirective],
   templateUrl: './reactive-forms-page.component.html',
   styleUrls: ['../../common-page.scss', './reactive-forms-page.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ReactiveFormsPageComponent implements OnInit {
   @ViewChild(FormGroupDirective) private formDir!: FormGroupDirective;
   phonesLabels = ['Main', 'Mobile', 'Work', 'Home'];
   years = this.getYears();
   skills$!: Observable<string[]>;
+  showErrorStrategy = new OnDirtyErrorStateMatcher()
 
   destroyRef = inject(DestroyRef);
 
