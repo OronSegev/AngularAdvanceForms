@@ -20,7 +20,7 @@ import { Observable, bufferCount, filter, startWith, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UserSkillsService } from '../../../core/user-skills.service';
 import { banWords } from '../validators/ban-words';
-import { passwordShouldmatch } from '../validators/password-should-match';
+import { passwordShouldMatch } from '../validators/password-should-match';
 import { UinqueNicknameValidator } from '../validators/uinque-nicknameValidator';
 import { DynamicValidatorMessageDirective } from '../../../core/dynamic-validator-message.directive';
 import { OnDirtyErrorStateMatcher } from '../../../core/input-error/error-state-matcher.service';
@@ -83,13 +83,12 @@ export class ReactiveFormsPageComponent implements OnInit {
       }),
     ]),
     skills: this.fb.record<boolean>({}),
-    password: this.fb.group(
-      {
-        password: ['', [Validators.required, Validators.minLength(6)]],
-        confirmPassword: '',
-      },
-      { validators: passwordShouldmatch }
-    ),
+    password: this.fb.group({
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ''
+    }, {
+      validators: passwordShouldMatch
+    }),
   });
 
   private initialFormValue: any;

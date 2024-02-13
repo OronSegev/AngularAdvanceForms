@@ -1,18 +1,15 @@
-import { AbstractControl, ValidationErrors } from '@angular/forms';
+import { AbstractControl, ValidationErrors } from "@angular/forms";
 
-export function passwordShouldmatch(
-  control: AbstractControl
-): ValidationErrors | null {
+export function passwordShouldMatch(control: AbstractControl): ValidationErrors | null {
   const password = control.get('password');
   const confirmPassword = control.get('confirmPassword');
+  const errors = { passwordShouldMatch: { mismatch: true } };
 
   if (password?.value === confirmPassword?.value) {
     return null;
   }
 
-  const error = { passwordShouldmatch: { mismatch: true } };
+  confirmPassword?.setErrors(errors);
 
-  confirmPassword?.setErrors(error)
-
-  return error;
+  return errors;
 }
