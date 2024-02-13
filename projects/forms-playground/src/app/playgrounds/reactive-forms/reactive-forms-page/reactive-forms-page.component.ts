@@ -24,11 +24,12 @@ import { passwordShouldMatch } from '../validators/password-should-match';
 import { UinqueNicknameValidator } from '../validators/uinque-nicknameValidator';
 import { DynamicValidatorMessageDirective } from '../../../core/dynamic-validator-message.directive';
 import { OnDirtyErrorStateMatcher } from '../../../core/input-error/error-state-matcher.service';
+import { ValidatorMessageContainer } from '../../../core/input-error/validator-message-container.directive';
 
 @Component({
   selector: 'app-reactive-forms-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, DynamicValidatorMessageDirective],
+  imports: [CommonModule, ReactiveFormsModule, DynamicValidatorMessageDirective, ValidatorMessageContainer],
   templateUrl: './reactive-forms-page.component.html',
   styleUrls: ['../../common-page.scss', './reactive-forms-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

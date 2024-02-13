@@ -15,11 +15,11 @@ import { ErrorStateMatcher } from './input-error/error-state-matcher.service';
 })
 export class DynamicValidatorMessageDirective implements OnInit, OnDestroy {
   @Input() errorStateMatcher = inject(ErrorStateMatcher);
+  @Input() container = inject(ViewContainerRef);
 
   ngControl = inject(NgControl, { self: true, optional: true}) || inject(ControlContainer, {self: true});
   elementRef = inject(ElementRef)
 
-  private viewContainerRef = inject(ViewContainerRef);
   private componentRef: ComponentRef<InputErrorComponent> | null = null;
   private destroy = new Subject();
   private parentControlContainer = inject(ControlContainer, {optional: true});
@@ -42,7 +42,7 @@ export class DynamicValidatorMessageDirective implements OnInit, OnDestroy {
         skip(this.ngControl instanceof NgModel ? 1 : 0)
       ).subscribe(() => {
         if (this.errorStateMatcher.isErrorVisible(this.ngControl.control, this.form)){
-          this.componentRef ??= this.viewContainerRef.createComponent(InputErrorComponent);
+          this.componentRef ??= this.container.createComponent(InputErrorComponent);
           this.componentRef.changeDetectorRef.markForCheck();
           this.componentRef.setInput('errors', this.ngControl.errors);
         } else {

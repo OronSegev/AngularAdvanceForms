@@ -136,6 +136,7 @@
     ngModelGroup="password"
     appPasswordShouldMatch
     #passwordGroup="ngModelGroup"
+    [container]="containerDir.container"
   >
     <legend>User Password</legend>
     <div class="form-field">
@@ -164,6 +165,7 @@
         id="confirmPassword"
         placeholder="Enter user's password"
       />
+      <ng-container validatorMessageContainer #containerDir="validatorMessageContainer"></ng-container>
     </div>
   </fieldset>
   <button>Save</button>

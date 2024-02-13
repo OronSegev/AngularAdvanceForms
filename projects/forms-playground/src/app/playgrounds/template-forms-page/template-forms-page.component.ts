@@ -13,6 +13,7 @@ import {
   UniqeNicknameDirective,
 } from './validators/index';
 import { DynamicValidatorMessageDirective } from '../../core/dynamic-validator-message.directive';
+import { ValidatorMessageContainer } from '../../core/input-error/validator-message-container.directive';
 
 @Component({
   selector: 'app-template-forms-page',
@@ -23,7 +24,8 @@ import { DynamicValidatorMessageDirective } from '../../core/dynamic-validator-m
     BanWordsDirective,
     PasswordShouldMatchDirective,
     UniqeNicknameDirective,
-    DynamicValidatorMessageDirective
+    DynamicValidatorMessageDirective,
+    ValidatorMessageContainer
   ],
   templateUrl: './template-forms-page.component.html',
   styleUrls: [
