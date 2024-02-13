@@ -154,6 +154,7 @@
     <div class="form-field">
       <label for="password">Confirm Password</label>
       <input
+        withoutValidationErrors
         [(ngModel)]="userInfo.confirmPassword"
         required
         minlength="6"
